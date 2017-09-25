@@ -2,11 +2,12 @@
 
 from keras.models import Sequential
 from keras.layers import Dense
+from sklearn.model_selection import train_test_split
 import numpy
 
 
 # fix random seed
-numpy.random.seed(7)
+seed = numpy.random.seed(7)
 
 # load pima indians dataset
 dataset = numpy.loadtxt("E://!Weiterbildung//!DeepLearning//datasets//pima-indians-diabetes.csv", delimiter=",")
@@ -14,6 +15,9 @@ dataset = numpy.loadtxt("E://!Weiterbildung//!DeepLearning//datasets//pima-india
 # split into input and output variables
 X = dataset[:,0:8]
 Y = dataset[:,8]
+
+# split into 67% for train and 33% for test
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=seed)
 
 # define NN model with Keras
 model = Sequential()
@@ -25,7 +29,8 @@ model.add(Dense(1, activation= 'sigmoid')) # output layer
 model.compile(loss= 'binary_crossentropy' , optimizer= 'adam' , metrics=[ 'accuracy' ])
 
 # Fit the model
-model.fit(X, Y, epochs=150, batch_size=10)
+#model.fit(X, Y, validation_split=0.33, epochs=150, batch_size=10)
+model.fit(X_train, y_train, validation_data=(X_test,y_test), epochs=150, batch_size=10)
 
 # evaluate the model
 scores = model.evaluate(X, Y)
