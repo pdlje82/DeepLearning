@@ -8,6 +8,10 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 import numpy
 
+from keras.models import model_from_json
+from keras.models import model_from_yaml
+import os
+
 # fix random seed
 seed = numpy.random.seed(7)
 
